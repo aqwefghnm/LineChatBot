@@ -1,91 +1,148 @@
-# TOC Project 2020
+# Line Fitness
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
+## 前言
+現在健身的人愈來愈多，大家也愈來愈注重飲食健康，再加上作者本身也有健身的習慣，因此想設計一個LineChatBot來幫助有健身習慣的人，藉由它可以更清楚每天應該怎麼吃、吃多少來讓健身的效果更好。
 
-[![Known Vulnerabilities](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020/badge.svg)](https://snyk.io/test/github/NCKU-CCS/TOC-Project-2020)
+## 構想
+先藉由使用者輸入的性別、年齡、身高、體重、運動習慣等，幫助使用者算出BMR與TDEE。再藉由增肌、減脂兩個面向來幫助所需要的人，其中增肌有提供訓練各部位的推薦影片;減脂則是有現在主流的低醣飲食與生酮飲食來提供給大家參考。增肌、減脂都能查詢當天三大營養素應該各吃多少，也可以藉由衛生署提供的各食物營養素分析來給使用者查詢。
 
+## 環境
+- ubuntu 18.04
+- python 3.6.9
 
-Template Code for TOC Project 2020
+## 技術
+- Olami
+    - 具有NLP的聊天機器人
+- Beautifulsoup4
+    - 爬取youtube各健身部位的推薦影片
 
-A Line bot based on a finite state machine
-
-More details in the [Slides](https://hackmd.io/@TTW/ToC-2019-Project#) and [FAQ](https://hackmd.io/s/B1Xw7E8kN)
-
-## Setup
-
-### Prerequisite
-* Python 3.6
-* Pipenv
-* Facebook Page and App
-* HTTPS Server
-
-#### Install Dependency
-```sh
+## 使用教學
+1. install `pipenv`
+```shell
 pip3 install pipenv
-
-pipenv --three
-
-pipenv install
-
-pipenv shell
 ```
-
-* pygraphviz (For visualizing Finite State Machine)
-    * [Setup pygraphviz on Ubuntu](http://www.jianshu.com/p/a3da7ecc5303)
-	* [Note: macOS Install error](https://github.com/pygraphviz/pygraphviz/issues/100)
-
-
-#### Secret Data
-You should generate a `.env` file to set Environment Variables refer to our `.env.sample`.
-`LINE_CHANNEL_SECRET` and `LINE_CHANNEL_ACCESS_TOKEN` **MUST** be set to proper values.
-Otherwise, you might not be able to run your code.
-
-#### Run Locally
-You can either setup https server or using `ngrok` as a proxy.
-
-#### a. Ngrok installation
-* [ macOS, Windows, Linux](https://ngrok.com/download)
-
-or you can use Homebrew (MAC)
-```sh
-brew cask install ngrok
+2. install 所需套件
+```shell
+pipenv install --three
+// 若遇到pygraphviz安裝失敗，則嘗試下面這行
+sudo apt-get install graphviz graphviz-dev
 ```
+3. 從`.env.sample`產生出一個`.env`，並填入以下四個資訊
 
-**`ngrok` would be used in the following instruction**
+- Line
+    - LINE_CHANNEL_SECRET
+    - LINE_CHANNEL_ACCESS_TOKEN
+- Olami
+    - APP_KEY
+    - APP_SECRET
+4. install `ngrok`
 
-```sh
+```shell
+sudo snap install ngrok
+```
+5. run `ngrok` to deploy Line Chat Bot locally
+```shell
 ngrok http 8000
 ```
-
-After that, `ngrok` would generate a https URL.
-
-#### Run the sever
-
-```sh
+6. execute app.py
+```shell
 python3 app.py
 ```
 
-#### b. Servo
+## 使用說明
+- 基本操作
+    - 所有用到英文的指令大小寫皆可
+    - 隨時輸入任何字若沒觸發到都會有提示
+    - 以下三個指令皆可隨時輸入
+        - `restart`
+            - reset所有資訊
+        - `chat`
+            - 切換到聊天機器人模式
+        - `fsm`
+            - 傳回當前的fsm圖片
+- 架構圖
+    1. 輸入`fitness`開始使用健身小幫手
+    2. 輸入性別 -> `男生`或`女生`
+    3. 輸入年齡 -> `整數`
+    4. 輸入身高 -> `整數`
+    5. 輸入體重 -> `整數`
+    6. 輸入一週運動的天數 -> `整數`
+    7. 以下分成`增肌`與`減脂`來加以說明
+- `增肌`
+    - `熱量`
+        - 算出BMR與TDEE
+        - `食物`
+            - 可查看一天三大營養素需要吃多少
+            - 可回傳三大營養素所佔熱量比例的圓餅圖
+            - 可搜尋食物名稱來知道該食物的三大營養素
+        - `BMR`
+            - 文字說明何謂BMR
+        - `TDEE`
+            - 文字說明何謂TDEE
+    - `影片`
+        - 會推薦youtube上的健身影片
+        - 可根據想練的部位來加以訓練
+            - 胸
+            - 背
+            - 腿
+            - 肩 (未顯示在Button上）
+            - 二頭 (未顯示在Button上）
+            - 三頭 (未顯示在Button上）
+- `減脂`
+    - `低醣飲食`
+        - `熱量`
+            - 算出BMR與TDEE
+            - `食物`
+                - 可查看一天三大營養素需要吃多少
+                - 可回傳三大營養素所佔熱量比例的圓餅圖
+                - 可搜尋食物名稱來知道該食物的三大營養素
+            - `BMR`
+                - 文字說明何謂BMR
+            - `TDEE`
+                - 文字說明何謂TDEE
+    - `生酮飲食`
+        - `熱量`
+            - 算出BMR與TDEE
+            - `食物`
+                - 可查看一天三大營養素需要吃多少
+                - 可回傳三大營養素所佔熱量比例的圓餅圖
+                - 可搜尋食物名稱來知道該食物的三大營養素
+            - `BMR`
+                - 文字說明何謂BMR
+            - `TDEE`
+                - 文字說明何謂TDEE
 
-Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
+## 使用示範
+### 輸入個人資訊
+![](https://i.imgur.com/RAXRooY.jpg)
+![](https://i.imgur.com/3VkDy82.jpg)
+![](https://i.imgur.com/JhK01qT.jpg)
+![](https://i.imgur.com/OCsoSBk.jpg)
+### 增肌
+![](https://i.imgur.com/OodsURE.jpg)
+![](https://i.imgur.com/95lZAGO.jpg)
+![](https://i.imgur.com/DOj8yEs.jpg)
+![](https://i.imgur.com/bgeHzOf.jpg)
+![](https://i.imgur.com/R2vy5FN.jpg)
+![](https://i.imgur.com/TfHJx3t.jpg)
+![](https://i.imgur.com/6ZEIZzI.jpg)
+![](https://i.imgur.com/2iNuLe8.jpg)
+### 減脂
+![](https://i.imgur.com/bMUyt9S.jpg)
+![](https://i.imgur.com/Q5Dc1ou.jpg)
+![](https://i.imgur.com/SLyhbM5.jpg)
+![](https://i.imgur.com/Nwx6nZQ.jpg)
+### 隨時畫FSM
+![](https://i.imgur.com/kk8b9aa.jpg)
+### 聊天機器人
+![](https://i.imgur.com/co5NtdJ.jpg)
+![](https://i.imgur.com/v0uG700.jpg)
 
 
-## Finite State Machine
-![fsm](./img/show-fsm.png)
+## FSM
+![](https://i.imgur.com/GMrkfDT.png)
 
-## Usage
-The initial state is set to `user`.
-
-Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
-
-* user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
-
-## Deploy
+## Deploy in Heroku
 Setting to deploy webhooks on Heroku.
 
 ### Heroku CLI installation
@@ -131,6 +188,8 @@ sudo snap install --classic heroku
 	```
 	heroku config:set LINE_CHANNEL_SECRET=your_line_channel_secret
 	heroku config:set LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
+    heroku config:set APP_KEY=your_olami_APP_KEY
+    heroku config:set APP_SECRET=your_olami_APP_SECRET
 	```
 
 4. Your Project is now running on Heroku!
@@ -146,14 +205,3 @@ sudo snap install --classic heroku
 	heroku buildpacks:set heroku/python
 	heroku buildpacks:add --index 1 heroku-community/apt
 	```
-
-	refference: https://hackmd.io/@ccw/B1Xw7E8kN?type=view#Q2-如何在-Heroku-使用-pygraphviz
-
-## Reference
-[Pipenv](https://medium.com/@chihsuan/pipenv-更簡單-更快速的-python-套件管理工具-135a47e504f4) ❤️ [@chihsuan](https://github.com/chihsuan)
-
-[TOC-Project-2019](https://github.com/winonecheng/TOC-Project-2019) ❤️ [@winonecheng](https://github.com/winonecheng)
-
-Flask Architecture ❤️ [@Sirius207](https://github.com/Sirius207)
-
-[Line line-bot-sdk-python](https://github.com/line/line-bot-sdk-python/tree/master/examples/flask-echo)

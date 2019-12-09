@@ -438,13 +438,14 @@ class TocMachine(GraphMachine):
             text = '找不到任何有關這名稱的食物，請再輸入一次，或者輸入『back』返回'
             send_text_message(event.reply_token, text)
         else:
-            text = '以下為每100克中的含量:\n'
+            text = '以下為每100克中的含量:\n\n'
             for index, row in df2.iterrows():
                 if index%3 == 0:
-                    text += row['樣品名稱'] + ':脂肪' + str(row['每100克含量']) + 'g,蛋白質'
-                elif index%2 == 1:
-                    text += str(row['每100克含量']) + 'g,碳水化合物'
+                    text += row['樣品名稱'] + '\n'
+                    text += '脂肪: ' + str(row['每100克含量']).strip() + 'g\n'
+                elif index%3 == 1:
+                    text += '蛋白質: ' + str(row['每100克含量']).strip() + 'g\n'
                 else:
-                    text += str(row['每100克含量']) + 'g\n'
+                    text += '碳水化合物: ' + str(row['每100克含量']).strip() + 'g\n\n'
             send_text_message(event.reply_token, text)
 

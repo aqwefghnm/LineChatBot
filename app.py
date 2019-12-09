@@ -156,10 +156,10 @@ def webhook_handler():
             if event.message.text.lower() == 'fsm':
                 send_image_message(event.reply_token, 'https://f74062044.herokuapp.com/show-fsm')
             elif machine.state != 'user' and event.message.text.lower() == 'restart':
-                send_text_message(event.reply_token, '輸入『fitness』即可開始使用健身小幫手。\n隨時輸入『chat』可以跟機器人聊天。\n隨時輸入『restart』可以從頭開始。\n隨時輸入『fsm』可以得到當下的狀態圖')
+                send_text_message(event.reply_token, '輸入『fitness』即可開始使用健身小幫手。\n隨時輸入『chat』可以跟機器人聊天。\n隨時輸入『restart』可以從頭開始。\n隨時輸入『fsm』可以得到當下的狀態圖。')
                 machine.go_back()
             elif machine.state == 'user':
-                send_text_message(event.reply_token, '輸入『fitness』即可開始使用健身小幫手。\n隨時輸入『chat』可以跟機器人聊天。\n隨時輸入『restart』可以從頭開始。\n隨時輸入『fsm』可以得到當下的狀態圖')
+                send_text_message(event.reply_token, '輸入『fitness』即可開始使用健身小幫手。\n隨時輸入『chat』可以跟機器人聊天。\n隨時輸入『restart』可以從頭開始。\n隨時輸入『fsm』可以得到當下的狀態圖。')
             elif machine.state == 'input_age' or machine.state == 'input_height' or machine.state == 'input_weight':
                 send_text_message(event.reply_token, '請輸入一個整數')
             elif machine.state == 'input_gender':

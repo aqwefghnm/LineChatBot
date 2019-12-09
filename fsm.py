@@ -447,3 +447,4 @@ class TocMachine(GraphMachine):
                 else:
                     text += str(row['每100克含量']) + 'g\n'
             send_text_message(event.reply_token, text)
+

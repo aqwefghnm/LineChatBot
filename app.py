@@ -186,7 +186,7 @@ def webhook_handler():
             elif (machine.state == 'show_img' or machine.state == 'get_video') and (event.message.text.lower() != 'back'):
                 send_text_message(event.reply_token, '輸入『back』返回選單。')
             elif machine.state == 'show_food' and event.message.text.lower() != 'back':
-                send_text_message(event.reply_token, '輸入『圖片』可查看熱量圖。\n輸入『back』返回選單。')
+                send_text_message(event.reply_token, '輸入『圖片』可查看熱量圖。\n輸入『查詢』可查詢食物的營養素。\n輸入『back』返回選單。')
             elif (machine.state == 'thin_type1' or machine.state == 'thin_type2') and (event.message.text.lower() != 'back'):
                 send_text_message(event.reply_token, '輸入『熱量』可以查看您一天所需的熱量。\n輸入『back』返回選單。')
 
